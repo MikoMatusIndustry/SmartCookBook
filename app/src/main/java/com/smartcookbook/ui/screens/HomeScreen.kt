@@ -249,7 +249,7 @@ fun HomeScreen(
                             ) {
                                 Icon(
                                     Icons.Filled.ChevronLeft, null,
-                                    tint = if (firstVisible > 0) Gray900 else Gray300,
+                                    tint = if (firstVisible > 0) Gray900 else Gray400,
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
