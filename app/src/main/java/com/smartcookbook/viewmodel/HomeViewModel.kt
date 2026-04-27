@@ -20,6 +20,9 @@ class HomeViewModel(private val repo: RecipeRepository) : ViewModel() {
     val recipeOfDay = SeedData.RECIPES.first()
     val allRecipes  = SeedData.RECIPES
 
+    val recentRecipes: StateFlow<List<Recipe>> = repo.recentRecipes
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     val favoriteIds: StateFlow<List<Int>> = repo.getFavoriteIds()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 

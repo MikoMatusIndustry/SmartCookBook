@@ -17,6 +17,10 @@ class RecipeDetailsViewModel(
 
     val recipe: Recipe? = repo.getRecipeById(recipeId)
 
+    init {
+        repo.addRecentRecipe(recipeId)
+    }
+
     val isFavorite: StateFlow<Boolean> = repo.isFavorite(recipeId)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 

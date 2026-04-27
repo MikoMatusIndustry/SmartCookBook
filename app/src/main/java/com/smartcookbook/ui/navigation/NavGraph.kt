@@ -19,7 +19,7 @@ fun NavGraph() {
     val navController = rememberNavController()
     val context = LocalContext.current
     val db = AppDatabase.getInstance(context)
-    val recipeRepo = RecipeRepository(db)
+    val recipeRepo = androidx.compose.runtime.remember { RecipeRepository(db, context) }
     val shoppingRepo = ShoppingRepository(db)
 
     NavHost(navController = navController, startDestination = Screen.Welcome.route) {

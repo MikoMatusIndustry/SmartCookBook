@@ -7,9 +7,35 @@ import com.smartcookbook.data.model.Recipe
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class RecipeRepository(db: AppDatabase) {
+import android.content.Context
+import kotlinx.coroutines.flow.MutableStateFlow
+
+class RecipeRepository(db: AppDatabase, context: Context) {
 
     private val favoriteDao = db.favoriteDao()
+    private val prefs = context.getSharedPreferences("recent_recipes", Context.MODE_PRIVATE)
+
+    private val _recentRecipeIds = MutableStateFlow(loadRecentIds())
+
+    val recentRecipes: Flow<List<Recipe>> = _recentRecipeIds.map { ids ->
+        val recipes = ids.mapNotNull { getRecipeById(it) }
+        if (recipes.isEmpty()) SeedData.RECIPES.take(5) else recipes
+    }
+
+    fun addRecentRecipe(id: Int) {
+        val current = _recentRecipeIds.value.toMutableList()
+        current.remove(id)
+        current.add(0, id)
+        val updated = current.take(5)
+        _recentRecipeIds.value = updated
+        prefs.edit().putString("ids", updated.joinToString(",")).apply()
+    }
+
+    private fun loadRecentIds(): List<Int> {
+        val str = prefs.getString("ids", "") ?: ""
+        if (str.isBlank()) return emptyList()
+        return str.split(",").mapNotNull { it.toIntOrNull() }
+    }
 
     fun getAllRecipes(): List<Recipe> = SeedData.RECIPES
 

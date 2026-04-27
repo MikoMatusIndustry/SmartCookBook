@@ -42,6 +42,7 @@ fun HomeScreen(
 ) {
     val searchQuery by vm.searchQuery.collectAsState()
     val searchResults by vm.searchResults.collectAsState()
+    val recentRecipes by vm.recentRecipes.collectAsState()
 
     val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
         in 0..11  -> "Good Morning!"
@@ -215,7 +216,7 @@ fun HomeScreen(
                     val listState = rememberLazyListState()
                     val scope = rememberCoroutineScope()
                     val cardWidthPx = 164 // 152dp card + 12dp spacing
-                    val totalItems = vm.allRecipes.size
+                    val totalItems = recentRecipes.size
 
                     // Scroll progress for indicator bar
                     val firstVisible = listState.firstVisibleItemIndex
@@ -282,7 +283,7 @@ fun HomeScreen(
                             contentPadding = PaddingValues(horizontal = 20.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            items(vm.allRecipes) { recipe ->
+                            items(recentRecipes) { recipe ->
                                 Card(
                                     modifier = Modifier
                                         .width(152.dp)
