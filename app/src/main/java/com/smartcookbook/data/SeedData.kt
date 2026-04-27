@@ -9,7 +9,7 @@ object SeedData {
     val CATEGORIES = listOf(
         Category(1, "Breakfast", "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=800"),
         Category(2, "Lunch",     "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800"),
-        Category(3, "Dinner",    "https://images.unsplash.com/photo-1544025162-d76538b2a6d5?w=800"),
+        Category(3, "Dinner",    "https://images.unsplash.com/photo-1706650616334-97875fae8521?w=800"),
         Category(4, "Desserts",  "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800"),
     )
 

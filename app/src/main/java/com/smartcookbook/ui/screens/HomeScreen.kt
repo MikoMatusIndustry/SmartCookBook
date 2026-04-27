@@ -222,10 +222,11 @@ fun HomeScreen(
                         }
                         Spacer(Modifier.height(12.dp))
                         LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
                             contentPadding = PaddingValues(horizontal = 20.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            items(vm.allRecipes.take(8)) { recipe ->
+                            items(vm.allRecipes) { recipe ->
                                 Card(
                                     modifier = Modifier
                                         .width(152.dp)
