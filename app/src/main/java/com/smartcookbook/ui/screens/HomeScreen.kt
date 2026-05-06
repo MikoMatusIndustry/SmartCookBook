@@ -43,6 +43,9 @@ fun HomeScreen(
     val searchQuery by vm.searchQuery.collectAsState()
     val searchResults by vm.searchResults.collectAsState()
     val recentRecipes by vm.recentRecipes.collectAsState()
+    val categories by vm.categories.collectAsState()
+    val allRecipes by vm.allRecipes.collectAsState()
+    val recipeOfDay = allRecipes.firstOrNull()
 
     val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
         in 0..11  -> "Good Morning!"
@@ -123,11 +126,11 @@ fun HomeScreen(
                                 .fillMaxWidth()
                                 .height(240.dp)
                                 .clip(RoundedCornerShape(28.dp))
-                                .clickable { onRecipeClick(vm.recipeOfDay.id.toString()) }
+                                .clickable { recipeOfDay?.let { onRecipeClick(it.id.toString()) } }
                         ) {
                             AsyncImage(
-                                model = vm.recipeOfDay.thumbnail,
-                                contentDescription = vm.recipeOfDay.title,
+                                model = recipeOfDay?.thumbnail,
+                                contentDescription = recipeOfDay?.title,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxSize()
                             )
@@ -154,14 +157,14 @@ fun HomeScreen(
                                         color = White,
                                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp))
                                 }
-                                Text(vm.recipeOfDay.title,
+                                Text(recipeOfDay?.title ?: "",
                                     style = MaterialTheme.typography.headlineMedium, color = White,
                                     maxLines = 2, overflow = TextOverflow.Ellipsis)
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Icon(Icons.Filled.AccessTime, null,
                                         tint = Orange400, modifier = Modifier.size(16.dp))
                                     Spacer(Modifier.width(4.dp))
-                                    Text(vm.recipeOfDay.prepTime,
+                                    Text(recipeOfDay?.prepTime ?: "",
                                         style = MaterialTheme.typography.labelMedium, color = White)
                                 }
                             }
@@ -175,7 +178,7 @@ fun HomeScreen(
                         Text("Categories",
                             style = MaterialTheme.typography.headlineSmall, color = Gray900)
                         Spacer(Modifier.height(12.dp))
-                        val grid = vm.categories.chunked(2)
+                        val grid = categories.chunked(2)
                         grid.forEach { row ->
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                 row.forEach { cat ->

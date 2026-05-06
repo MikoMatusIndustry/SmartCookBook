@@ -1,25 +1,57 @@
 package com.smartcookbook.data.repository
 
-import com.smartcookbook.data.SeedData
+import android.content.Context
 import com.smartcookbook.data.local.AppDatabase
 import com.smartcookbook.data.local.FavoriteEntity
+import com.smartcookbook.data.model.Category
+import com.smartcookbook.data.model.Ingredient
 import com.smartcookbook.data.model.Recipe
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-
-import android.content.Context
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 
 class RecipeRepository(db: AppDatabase, context: Context) {
 
+    private val recipeDao = db.recipeDao()
     private val favoriteDao = db.favoriteDao()
     private val prefs = context.getSharedPreferences("recent_recipes", Context.MODE_PRIVATE)
 
     private val _recentRecipeIds = MutableStateFlow(loadRecentIds())
 
-    val recentRecipes: Flow<List<Recipe>> = _recentRecipeIds.map { ids ->
-        val recipes = ids.mapNotNull { getRecipeById(it) }
-        if (recipes.isEmpty()) SeedData.RECIPES.take(5) else recipes
+    // ── Kategorie ────────────────────────────────────────────────────────────
+
+    fun getAllCategories(): Flow<List<Category>> = recipeDao.getAllCategories()
+
+    suspend fun getCategoryById(id: Int): Category? = recipeDao.getCategoryById(id)
+
+    // ── Przepisy ─────────────────────────────────────────────────────────────
+
+    fun getAllRecipes(): Flow<List<Recipe>> = recipeDao.getAllRecipes()
+
+    suspend fun getRecipeById(id: Int): Recipe? = recipeDao.getRecipeById(id)
+
+    fun getRecipesByCategory(categoryId: Int): Flow<List<Recipe>> =
+        recipeDao.getRecipesByCategory(categoryId)
+
+    // ── Składniki ────────────────────────────────────────────────────────────
+
+    fun getIngredientsByRecipeId(recipeId: Int): Flow<List<Ingredient>> =
+        recipeDao.getIngredientsByRecipeId(recipeId)
+
+    // ── Ostatnio przeglądane ─────────────────────────────────────────────────
+
+    val recentRecipes: Flow<List<Recipe>> = _recentRecipeIds.flatMapLatest { ids ->
+        if (ids.isEmpty()) {
+            // Fallback: pokaż pierwsze 5 przepisów z bazy
+            recipeDao.getAllRecipes().map { it.take(5) }
+        } else {
+            recipeDao.getRecipesByIds(ids).map { recipes ->
+                // Zachowaj kolejność z listy IDs
+                ids.mapNotNull { id -> recipes.find { it.id == id } }
+            }
+        }
     }
 
     fun addRecentRecipe(id: Int) {
@@ -37,20 +69,16 @@ class RecipeRepository(db: AppDatabase, context: Context) {
         return str.split(",").mapNotNull { it.toIntOrNull() }
     }
 
-    fun getAllRecipes(): List<Recipe> = SeedData.RECIPES
-
-    fun getRecipeById(id: Int): Recipe? = SeedData.RECIPES.find { it.id == id }
-
-    fun getRecipesByCategory(categoryId: Int): List<Recipe> =
-        SeedData.RECIPES.filter { it.categoryId == categoryId }
+    // ── Ulubione ─────────────────────────────────────────────────────────────
 
     fun getFavoriteIds(): Flow<List<Int>> =
         favoriteDao.getAllFavorites().map { list -> list.map { it.recipeId } }
 
     fun getFavoriteRecipes(): Flow<List<Recipe>> =
-        favoriteDao.getAllFavorites().map { entities ->
+        favoriteDao.getAllFavorites().flatMapLatest { entities ->
             val ids = entities.map { it.recipeId }
-            SeedData.RECIPES.filter { it.id in ids }
+            if (ids.isEmpty()) flowOf(emptyList())
+            else recipeDao.getRecipesByIds(ids)
         }
 
     fun isFavorite(recipeId: Int): Flow<Boolean> =
