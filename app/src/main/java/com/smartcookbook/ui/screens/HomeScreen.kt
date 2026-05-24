@@ -262,8 +262,10 @@ fun HomeScreen(
                             IconButton(
                                 onClick = {
                                     scope.launch {
-                                        val target = (listState.firstVisibleItemIndex + 1).coerceAtMost(totalItems - 1)
-                                        listState.animateScrollToItem(target)
+                                        if (totalItems > 0) {
+                                            val target = (listState.firstVisibleItemIndex + 1).coerceAtMost(totalItems - 1)
+                                            listState.animateScrollToItem(target)
+                                        }
                                     }
                                 },
                                 modifier = Modifier

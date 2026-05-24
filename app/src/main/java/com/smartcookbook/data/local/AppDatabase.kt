@@ -34,22 +34,25 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): AppDatabase =
             INSTANCE ?: synchronized(this) {
-                Room.databaseBuilder(
+                lateinit var db: AppDatabase
+                db = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "smartcookbook_db"
                 )
                 .fallbackToDestructiveMigration()
-                .addCallback(PrepopulateCallback())
-                .build().also { INSTANCE = it }
+                .addCallback(PrepopulateCallback { db })
+                .build()
+                INSTANCE = db
+                db
             }
 
-        private class PrepopulateCallback : Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                INSTANCE?.let { database ->
-                    CoroutineScope(Dispatchers.IO).launch {
-                        val dao = database.recipeDao()
+        private class PrepopulateCallback(private val getDb: () -> AppDatabase) : Callback() {
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dao = getDb().recipeDao()
+                    if (dao.getRecipeCount() == 0) {
                         dao.insertCategories(SeedData.CATEGORIES)
                         dao.insertRecipes(SeedData.RECIPES)
                         dao.insertIngredients(SeedData.INGREDIENTS)
