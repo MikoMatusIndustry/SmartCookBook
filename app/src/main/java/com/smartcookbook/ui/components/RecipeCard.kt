@@ -52,7 +52,8 @@ fun RecipeCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.height(4.dp))
-// rating removed
+
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Filled.AccessTime, null, tint = Orange500, modifier = Modifier.size(14.dp))
                     Spacer(Modifier.width(4.dp))
