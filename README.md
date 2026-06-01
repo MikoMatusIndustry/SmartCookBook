@@ -1,10 +1,10 @@
-# 🍳 SmartCookBook
+# 🍳 SmartCookBook (ScooBy 🐕)
 
 > **Osobisty asystent kulinarny** — aplikacja mobilna na system Android umożliwiająca przeglądanie przepisów, zapisywanie ulubionych, zarządzanie listą zakupów oraz odmierzanie czasu gotowania.
 
 ---
 
-## 📋 Spis treści
+## Spis treści
 
 1. [Opis projektu](#opis-projektu)
 2. [Technologie i biblioteki](#technologie-i-biblioteki)
@@ -22,13 +22,13 @@
 
 SmartCookBook to aplikacja mobilna napisana w całości w języku **Kotlin** z wykorzystaniem **Jetpack Compose** jako frameworka do budowania interfejsu użytkownika. Aplikacja pozwala użytkownikowi na:
 
-- 🔍 Przeglądanie przepisów kulinarnych pogrupowanych w kategorie
-- 🔎 Wyszukiwanie przepisów po nazwie
-- 📖 Przeglądanie szczegółów przepisu (składniki, instrukcje krok po kroku, wideo)
-- ❤️ Zapisywanie przepisów do ulubionych
-- 🛒 Zarządzanie listą zakupów (dodawanie, zaznaczanie, usuwanie)
-- ⏱️ Odmierzanie czasu gotowania wbudowanym timerem
-- 📱 Automatyczne powitanie zależne od pory dnia
+-  Przeglądanie przepisów kulinarnych pogrupowanych w kategorie
+-  Wyszukiwanie przepisów po nazwie
+-  Przeglądanie szczegółów przepisu (składniki, instrukcje krok po kroku, wideo)
+-  Zapisywanie przepisów do ulubionych
+-  Zarządzanie listą zakupów (dodawanie, zaznaczanie, usuwanie)
+-  Odmierzanie czasu gotowania wbudowanym timerem
+-  Automatyczne powitanie zależne od pory dnia
 
 Dane przepisów są przechowywane **lokalnie** w bazie danych SQLite za pomocą biblioteki Room i wczytywane przy pierwszym uruchomieniu z predefiniowanego zestawu danych.
 
@@ -431,7 +431,7 @@ Funkcjonalności:
   ```
 - **Wizualizacja:** dwa nakładające się `CircularProgressIndicator` (tło szare + pomarańczowy postęp)
 - **Dźwięk zakończenia:** `ToneGenerator(STREAM_ALARM).startTone(TONE_PROP_BEEP2, 1500ms)`
-- **Animacja "Done! 🎉":** pulsujące `graphicsLayer { alpha = pulseAlpha }` przez `rememberInfiniteTransition`
+- **Animacja "Done! ":** pulsujące `graphicsLayer { alpha = pulseAlpha }` przez `rememberInfiniteTransition`
 
 ---
 
@@ -620,5 +620,6 @@ app/src/main/
 
 ## Autorzy
 
-Projekt realizowany w ramach zajęć akademickich.
+Mikołaj Matusik 279526
+Kajetan Dzik 279399
 
