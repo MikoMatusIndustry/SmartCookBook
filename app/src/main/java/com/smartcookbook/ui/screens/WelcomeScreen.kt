@@ -106,40 +106,25 @@ fun WelcomeScreen(onContinue: () -> Unit) {
 
             Spacer(Modifier.height(56.dp))
 
-            // Google button
-            OutlinedButton(
+            // Get Started button
+            Button(
                 onClick = onContinue,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Gray700)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Orange500,
+                    contentColor = White
+                )
             ) {
-                // Google G colours as text indicator
-                Text("G", color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.titleMedium)
-                Text("o", color = Amber400, style = MaterialTheme.typography.titleMedium)
-                Text("o", color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.titleMedium)
-                Text("g", color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium)
-                Text("l", color = Green500, style = MaterialTheme.typography.titleMedium)
-                Text("e  ", color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.width(4.dp))
-                Text("Continue with Google",
-                    style = MaterialTheme.typography.titleMedium, color = Gray700)
+                Text(
+                    "Get Started  →",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
         }
 
-        // Bottom label
-        Text(
-            text = "SECURE YOUR RECIPES ACROSS ALL DEVICES",
-            style = MaterialTheme.typography.labelSmall,
-            color = Gray400,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 32.dp)
-        )
+
     }
 }

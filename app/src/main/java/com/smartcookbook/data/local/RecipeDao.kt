@@ -20,6 +20,9 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategories(categories: List<Category>)
 
+    @Query("DELETE FROM Kategorie")
+    suspend fun deleteAllCategories()
+
     // ── Przepisy ─────────────────────────────────────────────────────────────
 
     @Query("SELECT * FROM Przepisy")
@@ -37,6 +40,9 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipes(recipes: List<Recipe>)
 
+    @Query("DELETE FROM Przepisy")
+    suspend fun deleteAllRecipes()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(recipe: Recipe)
 
@@ -50,4 +56,7 @@ interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredients(ingredients: List<Ingredient>)
+
+    @Query("DELETE FROM Skladniki")
+    suspend fun deleteAllIngredients()
 }
