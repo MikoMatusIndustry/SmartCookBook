@@ -3,8 +3,10 @@ package com.smartcookbook.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.smartcookbook.data.model.Ingredient
 import com.smartcookbook.data.model.Recipe
 import com.smartcookbook.data.repository.RecipeRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -15,9 +17,16 @@ class RecipeDetailsViewModel(
     val recipeId: Int
 ) : ViewModel() {
 
-    val recipe: Recipe? = repo.getRecipeById(recipeId)
+    private val _recipe = MutableStateFlow<Recipe?>(null)
+    val recipe: StateFlow<Recipe?> = _recipe
+
+    val ingredients: StateFlow<List<Ingredient>> = repo.getIngredientsByRecipeId(recipeId)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
+        viewModelScope.launch {
+            _recipe.value = repo.getRecipeById(recipeId)
+        }
         repo.addRecentRecipe(recipeId)
     }
 

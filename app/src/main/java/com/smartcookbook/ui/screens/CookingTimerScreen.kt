@@ -1,9 +1,9 @@
 package com.smartcookbook.ui.screens
 
-import android.media.AudioAttributes
-import android.media.ToneGenerator
-import android.media.AudioManager
+import android.media.MediaPlayer
 import androidx.compose.animation.core.*
+import androidx.compose.ui.platform.LocalContext
+import com.smartcookbook.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -35,14 +35,17 @@ fun CookingTimerScreen(
     val isRunning by vm.isRunning.collectAsState()
     val isFinished by vm.isFinished.collectAsState()
 
+    val context = LocalContext.current
+
     // Play beep when timer finishes
     LaunchedEffect(isFinished) {
         if (isFinished) {
             try {
-                val toneGen = ToneGenerator(AudioManager.STREAM_ALARM, 80)
-                toneGen.startTone(ToneGenerator.TONE_PROP_BEEP2, 1500)
-                kotlinx.coroutines.delay(1600)
-                toneGen.release()
+                val mediaPlayer = MediaPlayer.create(context, R.raw.timer_alarm)
+                mediaPlayer?.start()
+                mediaPlayer?.setOnCompletionListener {
+                    it.release()
+                }
             } catch (e: Exception) { /* ignore if audio unavailable */ }
         }
     }

@@ -20,7 +20,7 @@ object SeedData {
             title = "Avocado Toast & Poached Egg",
             prepTime = "10 min",
             thumbnail = "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Toast sourdough bread slices until golden and crispy.\nMash ripe avocado with lemon juice, salt, pepper and chili flakes.\nPoach eggs in simmering water with a splash of vinegar for 3 minutes.\nSpread avocado on toast and top with the poached egg.\nFinish with extra chili flakes and fresh dill."
         ),
         Recipe(
@@ -28,7 +28,7 @@ object SeedData {
             title = "Fluffy Blueberry Pancakes",
             prepTime = "20 min",
             thumbnail = "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Mix flour, baking powder, sugar and salt in a bowl.\nWhisk together milk, egg and melted butter, then combine with dry ingredients.\nFold in fresh blueberries gently.\nPour 1/4 cup portions onto a hot greased pan.\nCook until bubbles form, flip, cook 1 more minute.\nServe with maple syrup and extra blueberries."
         ),
         Recipe(
@@ -44,7 +44,7 @@ object SeedData {
             title = "Veggie Omelette",
             prepTime = "15 min",
             thumbnail = "https://images.unsplash.com/photo-1510693206972-df098062cb71?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Beat 3 eggs with a pinch of salt and pepper.\nSauté diced onion and bell pepper in butter for 2 minutes.\nAdd sliced mushrooms and cook until soft.\nPour egg mixture over vegetables in the pan.\nCook on low heat, fold in half when set.\nGarnish with chopped chives and serve immediately."
         ),
 
@@ -62,7 +62,7 @@ object SeedData {
             title = "Grilled Chicken Wrap",
             prepTime = "20 min",
             thumbnail = "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Season chicken breast with cumin, paprika, garlic powder, salt and pepper.\nGrill over medium-high heat for 6–7 minutes per side.\nSlice into strips and let rest.\nWarm a flour tortilla on the pan.\nLayer with lettuce, sliced tomato, chicken strips, shredded cheese and sour cream.\nRoll tightly and cut diagonally."
         ),
         Recipe(
@@ -88,7 +88,7 @@ object SeedData {
             title = "Gourmet Pasta Primavera",
             prepTime = "25 min",
             thumbnail = "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Boil salted water and cook pasta al dente.\nSauté garlic in olive oil, add cherry tomatoes and zucchini.\nAdd asparagus and peas, cook for 3 more minutes.\nToss drained pasta with the vegetables and pasta water.\nFinish with Parmesan, lemon zest and fresh basil.\nSeason generously and serve immediately."
         ),
         Recipe(
@@ -96,7 +96,7 @@ object SeedData {
             title = "Beef Stir-Fry",
             prepTime = "20 min",
             thumbnail = "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Slice beef sirloin thinly against the grain.\nMarinate in soy sauce, sesame oil and cornstarch for 10 minutes.\nHeat wok until smoking, stir-fry beef until browned, set aside.\nStir-fry broccoli, bell peppers and snap peas.\nReturn beef and add oyster sauce and beef broth.\nServe over steamed white rice garnished with sesame seeds."
         ),
         Recipe(
@@ -104,7 +104,7 @@ object SeedData {
             title = "Baked Lemon Salmon",
             prepTime = "30 min",
             thumbnail = "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=800",
-            videoUrl = null,
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Preheat oven to 200°C.\nPlace salmon fillets on a lined baking sheet.\nRub with olive oil, minced garlic, lemon zest, salt and pepper.\nTop with thin lemon slices and fresh dill sprigs.\nBake for 12–15 minutes until salmon flakes easily.\nServe with roasted asparagus and a wedge of lemon."
         ),
         Recipe(
@@ -112,7 +112,7 @@ object SeedData {
             title = "Chicken Tikka Masala",
             prepTime = "45 min",
             thumbnail = "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Marinate chicken in yogurt, garam masala, cumin and turmeric for 30 minutes.\nGrill or pan-fry chicken until charred, then cut into chunks.\nSauté onion, ginger and garlic until golden.\nAdd tomato puree, cumin, coriander and chili powder.\nPour in heavy cream and simmer for 10 minutes.\nAdd chicken and cook for another 5 minutes. Serve with basmati rice and naan."
         ),
 
@@ -122,7 +122,7 @@ object SeedData {
             title = "Classic Crème Brûlée",
             prepTime = "60 min",
             thumbnail = "https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Preheat oven to 160°C.\nHeat heavy cream with vanilla bean until just simmering.\nWhisk egg yolks with sugar until pale and creamy.\nSlowly pour warm cream into yolks, whisking constantly.\nStrain and pour into ramekins. Place in a water bath.\nBake for 40 minutes until set but slightly jiggly.\nChill for 2 hours, then sprinkle sugar on top and torch until caramelised."
         ),
         Recipe(
@@ -130,7 +130,7 @@ object SeedData {
             title = "Chocolate Lava Cake",
             prepTime = "25 min",
             thumbnail = "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Preheat oven to 220°C. Grease and flour 4 ramekins.\nMelt dark chocolate and butter together over a double boiler.\nWhisk together eggs, egg yolks and sugar until thick.\nFold chocolate mixture into egg mixture.\nFold in flour until just combined.\nPour into ramekins and bake for exactly 12 minutes.\nInvert onto plates immediately and serve with vanilla ice cream."
         ),
         Recipe(
@@ -146,7 +146,7 @@ object SeedData {
             title = "Strawberry Cheesecake",
             prepTime = "90 min",
             thumbnail = "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=800",
-            videoUrl = "https://www.w3schools.com/html/mov_bbb.mp4",
+            videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
             instructions = "Crush digestive biscuits and mix with melted butter. Press into a springform pan.\nBeat cream cheese with sugar until smooth.\nAdd eggs one at a time, then mix in sour cream and vanilla.\nPour over the crust and bake at 160°C for 55 minutes.\nLet cool completely, then refrigerate overnight.\nTop with fresh strawberries and strawberry glaze before serving."
         )
     )

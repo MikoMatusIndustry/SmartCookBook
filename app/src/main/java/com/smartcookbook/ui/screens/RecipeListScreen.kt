@@ -7,9 +7,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.smartcookbook.data.SeedData
 import com.smartcookbook.data.repository.RecipeRepository
 import com.smartcookbook.ui.components.BottomNavBar
 import com.smartcookbook.ui.components.BottomNavTab
@@ -26,8 +27,9 @@ fun RecipeListScreen(
     onFavoritesClick: () -> Unit,
     onShoppingClick: () -> Unit
 ) {
-    val category = SeedData.CATEGORIES.find { it.id == categoryId }
-    val recipes = recipeRepo.getRecipesByCategory(categoryId)
+    val categories by recipeRepo.getAllCategories().collectAsState(initial = emptyList())
+    val category = categories.find { it.id == categoryId }
+    val recipes by recipeRepo.getRecipesByCategory(categoryId).collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = {

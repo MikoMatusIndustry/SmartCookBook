@@ -40,7 +40,8 @@ fun RecipeDetailsScreen(
     onBack: () -> Unit,
     onTimerClick: () -> Unit
 ) {
-    val recipe = vm.recipe ?: run {
+    val recipe by vm.recipe.collectAsState()
+    val currentRecipe = recipe ?: run {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text("Recipe not found")
         }
@@ -48,16 +49,17 @@ fun RecipeDetailsScreen(
     }
 
     val isFavorite by vm.isFavorite.collectAsState()
+    val ingredients by vm.ingredients.collectAsState()
     var activeTab by remember { mutableStateOf(0) } // 0=Ingredients, 1=Instructions
     var showVideo by remember { mutableStateOf(false) }
     val addedIngredients = remember { mutableStateSetOf<String>() }
     val context = LocalContext.current
 
     // ExoPlayer for video
-    val exoPlayer = remember(recipe.videoUrl) {
-        if (recipe.videoUrl != null) {
+    val exoPlayer = remember(currentRecipe.videoUrl) {
+        if (currentRecipe.videoUrl != null) {
             ExoPlayer.Builder(context).build().apply {
-                setMediaItem(MediaItem.fromUri(recipe.videoUrl))
+                setMediaItem(MediaItem.fromUri(currentRecipe.videoUrl))
                 prepare()
             }
         } else null
@@ -88,8 +90,8 @@ fun RecipeDetailsScreen(
                         }
                     } else {
                         AsyncImage(
-                            model = recipe.thumbnail,
-                            contentDescription = recipe.title,
+                            model = currentRecipe.thumbnail,
+                            contentDescription = currentRecipe.title,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
@@ -101,7 +103,7 @@ fun RecipeDetailsScreen(
                                 ))
                         )
                         // Play button
-                        if (recipe.videoUrl != null) {
+                        if (currentRecipe.videoUrl != null) {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
@@ -151,7 +153,7 @@ fun RecipeDetailsScreen(
                         .padding(horizontal = 20.dp, vertical = 24.dp)
                         .padding(bottom = 80.dp)
                 ) {
-                    Text(recipe.title, style = MaterialTheme.typography.headlineLarge, color = Gray900)
+                    Text(currentRecipe.title, style = MaterialTheme.typography.headlineLarge, color = Gray900)
                     Spacer(Modifier.height(8.dp))
 
                     // Meta chips
@@ -162,7 +164,7 @@ fun RecipeDetailsScreen(
                                 verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Filled.AccessTime, null, tint = Orange500, modifier = Modifier.size(14.dp))
                                 Spacer(Modifier.width(3.dp))
-                                Text(recipe.prepTime, style = MaterialTheme.typography.labelLarge, color = Gray700)
+                                Text(currentRecipe.prepTime, style = MaterialTheme.typography.labelLarge, color = Gray700)
                             }
                         }
                     }
@@ -186,7 +188,7 @@ fun RecipeDetailsScreen(
                     Spacer(Modifier.height(16.dp))
 
                     if (activeTab == 0) {
-                        com.smartcookbook.data.SeedData.INGREDIENTS.filter { it.recipeId == recipe.id }.forEach { ingredientObj ->
+                        ingredients.forEach { ingredientObj ->
                             val ingredient = ingredientObj.name + " " + ingredientObj.amount
                             val added = ingredient in addedIngredients
                             Surface(
@@ -223,7 +225,7 @@ fun RecipeDetailsScreen(
                             }
                         }
                     } else {
-                        val steps = recipe.instructions.split("\n").filter { it.isNotBlank() }
+                        val steps = currentRecipe.instructions.split("\n").filter { it.isNotBlank() }
                         steps.forEachIndexed { idx, step ->
                             Row(
                                 modifier = Modifier.padding(vertical = 8.dp),

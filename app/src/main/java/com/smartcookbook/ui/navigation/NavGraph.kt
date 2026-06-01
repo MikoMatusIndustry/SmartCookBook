@@ -20,7 +20,7 @@ fun NavGraph() {
     val context = LocalContext.current
     val db = AppDatabase.getInstance(context)
     val recipeRepo = androidx.compose.runtime.remember { RecipeRepository(db, context) }
-    val shoppingRepo = ShoppingRepository(db)
+    val shoppingRepo = androidx.compose.runtime.remember { ShoppingRepository(db) }
 
     NavHost(navController = navController, startDestination = Screen.Welcome.route) {
 
@@ -64,7 +64,7 @@ fun NavGraph() {
         ) { back ->
             val recipeId = back.arguments?.getString("recipeId")?.toIntOrNull() ?: -1
             val vm: RecipeDetailsViewModel = viewModel(
-                key = recipeId.toString(), // <--- NAPRAWIONE: Zmieniamy Int na String
+                key = recipeId.toString(),
                 factory = RecipeDetailsViewModel.Factory(recipeRepo, recipeId)
             )
             val shoppingVm: ShoppingListViewModel = viewModel(
