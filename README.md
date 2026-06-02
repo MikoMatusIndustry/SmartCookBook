@@ -63,22 +63,30 @@ Dane przepisów są przechowywane **lokalnie** w bazie danych SQLite za pomocą 
 
 Aplikacja jest zbudowana zgodnie z wzorcem architektonicznym **MVVM (Model – View – ViewModel)**, zalecanym przez Google dla aplikacji Android.
 
-```
-┌─────────────────────┐      collectAsState()      ┌────────────────────────┐
-│   UI (View)         │ ◄──── StateFlow ─────────── │   ViewModel            │
-│                     │                             │                        │
-│  Ekrany @Composable │ ──── zdarzenia (kliknięcia) ─► viewModelScope.launch  │
-└─────────────────────┘                             └───────────┬────────────┘
-                                                                │ suspend fun / Flow
-                                                    ┌───────────▼────────────┐
-                                                    │   Repository           │
-                                                    │  (warstwa dostępu)     │
-                                                    └───────────┬────────────┘
-                                                                │
-                                                    ┌───────────▼────────────┐
-                                                    │   Room DAO + SQLite    │
-                                                    │   SharedPreferences    │
-                                                    └────────────────────────┘
+```mermaid
+graph TD
+    subgraph "Widok (UI) - To co widzi użytkownik"
+        UI[Ekrany w Jetpack Compose np. HomeScreen]
+    end
+
+    subgraph "ViewModel - Kierownik Logiki"
+        VM[HomeViewModel]
+    end
+
+    subgraph "Magazyn (Model)"
+        REPO[RecipeRepository]
+        DAO[RecipeDao / Room]
+        DB[(Baza Danych SQLite)]
+    end
+
+    DB -->|Pobiera Tabele| DAO
+    DAO -->|Wysyła jako Flow| REPO
+    REPO -->|Wysyła jako Flow| VM
+    VM -->|Zapisuje jako Stan| UI
+    UI -->|Kliknięcie przez usera| VM
+    VM -->|Zapisz do bazy| REPO
+    REPO -->|Zapisz| DAO
+    DAO -->|Update| DB
 ```
 
 ### Dlaczego MVVM?
