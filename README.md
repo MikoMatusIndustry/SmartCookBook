@@ -105,6 +105,18 @@ graph TD
 | **DAO** | `RecipeDao`, `FavoriteDao`, `ShoppingItemDao` |
 | **Model** | `Category`, `Recipe`, `Ingredient`, `FavoriteEntity`, `ShoppingItemEntity` |
 
+### Reprezentacja Stanu (StateFlow) w ViewModelach
+
+Zgodnie z nowoczesnymi standardami Androida, każdy ekran posiada dedykowany ViewModel, który zarządza stanem i przekazuje go do widoku (UI) za pomocą asynchronicznych strumieni `StateFlow`. Poniżej zestawienie, co dokładnie jest "wypychane" przez poszczególne ViewModele na ekran:
+
+| ViewModel | Wystawiane strumienie (StateFlow / Flow) | Co to daje i jak działa? |
+|---|---|---|
+| **HomeViewModel** | `allRecipes`, `categories`, `searchQuery`, `searchResults` | Przekazuje listę kategorii i przepisów. Najciekawszy jest `searchResults`, który używa operatora `combine` – w czasie rzeczywistym nasłuchuje tego co użytkownik wpisuje w `searchQuery` i natychmiast filtruje listę przepisów. |
+| **FavoritesViewModel** | `favorites: StateFlow<List<Recipe>>` | Nasłuchuje na tabeli z Ulubionymi. Pobiera ID polubionych dań i automatycznie zaciąga pełne obiekty Przepisów z drugiej tabeli, podając gotową listę na ekran. |
+| **ShoppingListViewModel** | `items: StateFlow<List<ShoppingItemEntity>>` | Wypycha (emituje) pełną listę zakupów. Każde kliknięcie w checkbox od razu aktualizuje bazę, co sprawia, że Flow emituje nową listę, a ekran od razu przekreśla kupiony przedmiot. |
+| **CookingTimerViewModel** | `timeLeftSeconds`, `isRunning`, `isFinished` | Odseparowany od bazy danych. Wewnątrz pętli korutyny (`delay(1000)`) co sekundę aktualizuje zmienną `timeLeftSeconds`, co wywołuje automatyczne odrysowanie malejącego kołowego paska postępu na ekranie. |
+| **RecipeDetailsViewModel**| `isFavorite: StateFlow<Boolean>` | Dla konkretnego otwartego przepisu sprawdza w tabeli, czy istnieje on w Ulubionych. Wypycha wynik Prawda/Fałsz, który decyduje, czy przycisk serduszka ma być pusty czy czerwony. |
+
 ---
 
 ## Baza danych

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.NotificationsOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,17 +37,30 @@ fun CookingTimerScreen(
     val isFinished by vm.isFinished.collectAsState()
 
     val context = LocalContext.current
+    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
-    // Play beep when timer finishes
+    // Zatrzymanie dźwięku przy wyjściu z ekranu
+    DisposableEffect(Unit) {
+        onDispose {
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+        }
+    }
+
+    // Odtwarzanie dźwięku w pętli po zakończeniu
     LaunchedEffect(isFinished) {
         if (isFinished) {
             try {
-                val mediaPlayer = MediaPlayer.create(context, R.raw.timer_alarm)
+                mediaPlayer = MediaPlayer.create(context, R.raw.timer_alarm)
+                mediaPlayer?.isLooping = true // Zapętlamy dźwięk alarmu!
                 mediaPlayer?.start()
-                mediaPlayer?.setOnCompletionListener {
-                    it.release()
-                }
-            } catch (e: Exception) { /* ignore if audio unavailable */ }
+            } catch (e: Exception) { /* ignore */ }
+        } else {
+            try {
+                mediaPlayer?.stop()
+                mediaPlayer?.release()
+                mediaPlayer = null
+            } catch (e: Exception) { /* ignore */ }
         }
     }
 
@@ -181,20 +195,22 @@ fun CookingTimerScreen(
                         modifier = Modifier.size(28.dp))
                 }
 
-                // Play / Pause
+                // Play / Pause / Stop Alarm
                 IconButton(
-                    onClick = { vm.toggleTimer() },
-                    enabled = !isFinished,
+                    onClick = { 
+                        if (isFinished) vm.reset() 
+                        else vm.toggleTimer() 
+                    },
                     modifier = Modifier
                         .size(96.dp)
                         .background(
-                            color = if (isRunning) Red500 else Orange500,
+                            color = if (isRunning || isFinished) Red500 else Orange500,
                             shape = CircleShape
                         )
                 ) {
                     Icon(
-                        imageVector = if (isRunning) Icons.Filled.Stop else Icons.Filled.PlayArrow,
-                        contentDescription = if (isRunning) "Pause" else "Play",
+                        imageVector = if (isFinished) Icons.Outlined.NotificationsOff else if (isRunning) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+                        contentDescription = if (isFinished) "Stop Alarm" else if (isRunning) "Pause" else "Play",
                         tint = White,
                         modifier = Modifier.size(44.dp)
                     )
