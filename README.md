@@ -109,13 +109,13 @@ graph TD
 
 Zgodnie z nowoczesnymi standardami Androida, każdy ekran posiada dedykowany ViewModel, który zarządza stanem i przekazuje go do widoku (UI) za pomocą asynchronicznych strumieni `StateFlow`. Poniżej zestawienie, co dokładnie jest "wypychane" przez poszczególne ViewModele na ekran:
 
-| ViewModel | Wystawiane strumienie (StateFlow / Flow) | Co to daje i jak działa? |
-|---|---|---|
-| **HomeViewModel** | `allRecipes`, `categories`, `searchQuery`, `searchResults` | Przekazuje listę kategorii i przepisów. Najciekawszy jest `searchResults`, który używa operatora `combine` – w czasie rzeczywistym nasłuchuje tego co użytkownik wpisuje w `searchQuery` i natychmiast filtruje listę przepisów. |
-| **FavoritesViewModel** | `favorites: StateFlow<List<Recipe>>` | Nasłuchuje na tabeli z Ulubionymi. Pobiera ID polubionych dań i automatycznie zaciąga pełne obiekty Przepisów z drugiej tabeli, podając gotową listę na ekran. |
-| **ShoppingListViewModel** | `items: StateFlow<List<ShoppingItemEntity>>` | Wypycha (emituje) pełną listę zakupów. Każde kliknięcie w checkbox od razu aktualizuje bazę, co sprawia, że Flow emituje nową listę, a ekran od razu przekreśla kupiony przedmiot. |
-| **CookingTimerViewModel** | `timeLeftSeconds`, `isRunning`, `isFinished` | Odseparowany od bazy danych. Wewnątrz pętli korutyny (`delay(1000)`) co sekundę aktualizuje zmienną `timeLeftSeconds`, co wywołuje automatyczne odrysowanie malejącego kołowego paska postępu na ekranie. |
-| **RecipeDetailsViewModel**| `isFavorite: StateFlow<Boolean>` | Dla konkretnego otwartego przepisu sprawdza w tabeli, czy istnieje on w Ulubionych. Wypycha wynik Prawda/Fałsz, który decyduje, czy przycisk serduszka ma być pusty czy czerwony. |
+| ViewModel | Wystawiane strumienie (StateFlow / Flow) | Co to daje i jak działa? | Co wyświetla na ekranie? |
+|---|---|---|---|
+| **HomeViewModel** | `allRecipes`, `categories`, `searchQuery`, `searchResults` | Przekazuje listę kategorii i przepisów. Najciekawszy jest `searchResults`, który używa operatora `combine` – w czasie rzeczywistym nasłuchuje tego co użytkownik wpisuje w `searchQuery` i natychmiast filtruje listę przepisów. | Lista kategorii, siatka z przepisami, pole wyszukiwania z odświeżanymi na żywo wynikami. |
+| **FavoritesViewModel** | `favorites: StateFlow<List<Recipe>>` | Nasłuchuje na tabeli z Ulubionymi. Pobiera ID polubionych dań i automatycznie zaciąga pełne obiekty Przepisów z drugiej tabeli, podając gotową listę na ekran. | Lista ulubionych przepisów (LazyColumn). |
+| **ShoppingListViewModel** | `items: StateFlow<List<ShoppingItemEntity>>` | Wypycha (emituje) pełną listę zakupów. Każde kliknięcie w checkbox od razu aktualizuje bazę, co sprawia, że Flow emituje nową listę, a ekran od razu przekreśla kupiony przedmiot. | Lista produktów z checkboxami i dynamiczny pasek postępu (Progress Bar). |
+| **CookingTimerViewModel** | `timeLeftSeconds`, `isRunning`, `isFinished` | Odseparowany od bazy danych. Wewnątrz pętli korutyny (`delay(1000)`) co sekundę aktualizuje zmienną `timeLeftSeconds`, co wywołuje automatyczne odrysowanie malejącego kołowego paska postępu na ekranie. | Zmieniający się czas, animowany pasek postępu w formie koła (CircularProgressIndicator). |
+| **RecipeDetailsViewModel**| `isFavorite: StateFlow<Boolean>` | Dla konkretnego otwartego przepisu sprawdza w tabeli, czy istnieje on w Ulubionych. Wypycha wynik Prawda/Fałsz, który decyduje, czy przycisk serduszka ma być pusty czy czerwony. | Ikona serduszka (pełna/pusta) na zdjęciu przepisu. |
 
 ---
 
@@ -450,7 +450,7 @@ Funkcjonalności:
   }
   ```
 - **Wizualizacja:** dwa nakładające się `CircularProgressIndicator` (tło szare + pomarańczowy postęp)
-- **Dźwięk zakończenia:** `ToneGenerator(STREAM_ALARM).startTone(TONE_PROP_BEEP2, 1500ms)`
+- **Dźwięk zakończenia:** `MediaPlayer` odtwarza zapętlony dźwięk alarmu (`timer_alarm.mp3`). Istnieje opcja wyłączenia zapętlonego dźwięku i zresetowania stopera po upłynięciu czasu za pomocą dedykowanego przycisku ("Stop Alarm").
 - **Animacja "Done! ":** pulsujące `graphicsLayer { alpha = pulseAlpha }` przez `rememberInfiniteTransition`
 
 ---
